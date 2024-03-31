@@ -44,11 +44,10 @@ function renderTareas(){
         <th scope="row">${tarea.id}</th>
         <td>${tarea.descripcion}</td>
         <td><input type="checkbox" id="chkbx${tarea.id}" class="chkbx" onclick="tareaRealizada()"></td>
-        <td><button type="button" class="btn-close" aria-label="Close" onclick="eliminar(tarea, ${tarea.id})"></button></td>                        
+        <td><button type="button" class="btn-close" aria-label="Close" onclick="eliminar(${tarea.id})"></button></td>                        
         </tr>
         `;
     }
-
     seccionListado.innerHTML = html;
     totalesTareas.innerHTML = listadoTareas.length
     }

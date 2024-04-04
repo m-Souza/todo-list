@@ -24,16 +24,25 @@ renderTareas()
 // manejo de lista de tareas
 function eliminar(id){
     const index = listadoTareas.findIndex((ele) => ele.id == id)
+    if(listadoTareas[index]["checkbox"] == true){
+        totalesRealizadas.innerHTML -= 1
+    }
     listadoTareas.splice(index, 1)
     renderTareas()
 }
 
-function tareaRealizada() {
+function tareaRealizada(idTarea) {
     let checkboxes = document.querySelectorAll(".chkbx")
-    console.log(checkboxes)
     const checkboxesArray = Array.from(checkboxes)
     const checkFilter = checkboxesArray.filter(x => x.checked == true)
     totalesRealizadas.innerHTML = checkFilter.length
+    const indexAModificar = listadoTareas.findIndex(i => i.id===idTarea)
+    const currentBoxStatus = document.querySelector("#chkbx"+idTarea).checked
+    if (currentBoxStatus == true){
+        listadoTareas[indexAModificar]["checkbox"] = true
+    } else {
+        listadoTareas[indexAModificar]["checkbox"] = false
+    }
 }
 
 function renderTareas(){
@@ -43,13 +52,18 @@ function renderTareas(){
         <tr>
         <th scope="row">${tarea.id}</th>
         <td>${tarea.descripcion}</td>
-        <td><input type="checkbox" id="chkbx${tarea.id}" class="chkbx" onclick="tareaRealizada()"></td>
+        <td><input type="checkbox" id="chkbx${tarea.id}" class="chkbx" onclick="tareaRealizada(${tarea.id})"></td>
         <td><button type="button" class="btn-close" aria-label="Close" onclick="eliminar(${tarea.id})"></button></td>                        
         </tr>
         `;
     }
     seccionListado.innerHTML = html;
     totalesTareas.innerHTML = listadoTareas.length
+    // Restaurar tareas realizadas
+    var checkboxes = document.querySelectorAll("input[type=checkbox][class=chkbx]");
+    console.log(checkboxes)
+    checkboxes.forEach( x => x.checked = listadoTareas[listadoTareas.findIndex(i => i.id === Number(x.id.slice(5)) )]["checkbox"]
+    )
     }
 
 function crearId(){
